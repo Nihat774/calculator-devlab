@@ -1,9 +1,9 @@
 const btn = document.getElementsByClassName("btn");
 const display = document.querySelector(".display");
 const box = document.querySelector(".box");
-const previousData = document.querySelector(".previousData");
 const moon = document.querySelector(".moon");
 const sun = document.querySelector(".sun");
+
 let currentValue = "";
 let previousValue = "";
 let operandValue = "";
@@ -14,22 +14,18 @@ function appendNumber(number) {
 }
 
 function appendOperand(operand) {
-  if (operandValue != "" && previousValue != "") {
-    previousData.value = previousValue;
-  }
-  if (currentValue == "") return;
-  if (previousValue != "") {
+  if (currentValue === "") return;
+  if (previousValue !== "") {
     calculate();
   }
   operandValue = operand;
-  console.log(operandValue);
   previousValue = currentValue;
   currentValue = "";
-  display.value = `${previousValue} ${operandValue}`;
+  display.value = `${previousValue} ${operandValue} `;
 }
 
 function calculate() {
-  if (previousValue == "" || currentValue == "") return;
+  if (previousValue === "" || currentValue === "") return;
   let prev = parseFloat(previousValue);
   let current = parseFloat(currentValue);
   let result;
@@ -44,8 +40,9 @@ function calculate() {
       result = prev * current;
       break;
     case "/":
-      if (current == "0") {
+      if (current === 0) {
         alert("0-a bölmə yoxdur.");
+        return;
       }
       result = prev / current;
       break;
@@ -53,7 +50,7 @@ function calculate() {
       result = (prev * current) / 100;
       break;
     default:
-      break;
+      return;
   }
   currentValue = result.toString();
   operandValue = "";
@@ -63,7 +60,9 @@ function calculate() {
 
 function clearDisplay() {
   currentValue = "";
-  display.value = currentValue;
+  previousValue = "";
+  operandValue = "";
+  display.value = "";
 }
 
 window.onload = function () {
